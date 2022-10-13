@@ -5,3 +5,8 @@ const hakkinda = function (req, res, next) { //index isminde fonksiyon tanimlanm
 module.exports={
     hakkinda
 }
+
+
+
+
+
