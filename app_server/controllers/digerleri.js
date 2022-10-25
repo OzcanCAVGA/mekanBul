@@ -1,12 +1,7 @@
-const hakkinda = function (req, res, next) { //index isminde fonksiyon tanimlanmis ve ona 'function' fonksiyon tanimladik
+const hakkinda = function (req, res) {
+    res.render('hakkinda', { "title": "hakkinda" });
+  };
 
-    res.render('hakkinda', { title: 'Hakkinda Sayfasi' });
-}
-module.exports={
+  module.exports={
     hakkinda
-}
-
-
-
-
-
+  }

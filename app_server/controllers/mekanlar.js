@@ -3,30 +3,17 @@ var express = require('express');
 var router = express.Router();
 
 
-const anaSayfa = function (req, res, next) { //index isminde fonksiyon tanimlanmis ve ona 'function' fonksiyon tanimladik
+var ctrlMekanlar=require('../controllers/mekanlar');
+var ctrlDigerleri=require('../controllers/digerleri');
 
-    res.render('anasayfa', { title: 'Anasayfa' });
-}
-
-const mekanBilgisi = function (req, res, next) { //index isminde fonksiyon tanimlanmis ve ona 'function' fonksiyon tanimladik
-
-    res.render('mekanBilgisi', { title: 'Mekan Bilgisi' });
-}
-
-const yorumEkle = function (req, res, next) { //index isminde fonksiyon tanimlanmis ve ona 'function' fonksiyon tanimladik
-
-    res.render('yorumEkle', { title: 'Yorum Ekle' });
-}
+router.get('/',ctrlMekanlar.anaSayfa); 
+router.get('/mekan',ctrlMekanlar.mekanBilgisi);
+router.get('/mekan/yorum/yeni',ctrlMekanlar.yorumEkle);
+router.get('/hakkinda',ctrlDigerleri.hakkinda);
 
 
+module.exports = router;
 
-
-
-module.exports = {
-    anaSayfa,
-    mekanBilgisi,
-    yorumEkle
-}
 
 
 
