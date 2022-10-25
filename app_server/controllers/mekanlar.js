@@ -1,19 +1,16 @@
-
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
+const anaSayfa = function (req, res, next) {
+  res.render("anasayfa", { title: "Ana Sayfa" });
+};
 
-var ctrlMekanlar=require('../controllers/mekanlar');
-var ctrlDigerleri=require('../controllers/digerleri');
+const mekanBilgisi = function (req, res, next) {
+  res.render("mekanbilgisi", { title: "Mekan Bilgisi" });
+};
 
-router.get('/',ctrlMekanlar.anaSayfa); 
-router.get('/mekan',ctrlMekanlar.mekanBilgisi);
-router.get('/mekan/yorum/yeni',ctrlMekanlar.yorumEkle);
-router.get('/hakkinda',ctrlDigerleri.hakkinda);
+const yorumEkle = function (req, res, next) {
+  res.render("yorumekle", { title: "Yorum Sayfası" });
+};
 
-
-module.exports = router;
-
-
-
-
+module.exports = { anaSayfa, mekanBilgisi, yorumEkle };
