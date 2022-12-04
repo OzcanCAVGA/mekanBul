@@ -1,7 +1,7 @@
 # MekanBul Replit
 
 [Yakındaki Mekanları Listele - Replit](https://mekanBul.ozcancavga.repl.co/?enlem=36&boylam=34)
-![](/resimler/renderMetoduMekanlariListele.PNG)
+![](/resimler/renderMetoduMekanlariListele.PNG.png)
 
 ---
 
