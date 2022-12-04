@@ -5,7 +5,7 @@ var router = express.Router();
 
 var apiSecenekleri = {
   //sunucu: "http://localhost:3000",
-  sunucu:"https://mekanbul.ozcancavga.repl.co",
+  sunucu:"https://mekanBul.ozcancavga.repl.co",
   apiYolu: "/api/mekanlar/",
 };
 var mesafeyiFormatla = function (mesafe) {
@@ -23,7 +23,7 @@ var anaSayfaOlustur = function (res, mekanListesi) {
   var mesaj;
   //Gelen mekanListesi eger dizi tipinde degilse hata ver.
   if (!(mekanListesi instanceof Array)) {
-    mesaj = "API HATASI: Birşeyler ters gitti!";
+    mesaj = "API HATASI: Bir şeyler ters gitti!";
     mekanListesi = [];
   } else {
     //Eger belirlenen mesafe icinde mekan bulunamadiysa bilgilendir

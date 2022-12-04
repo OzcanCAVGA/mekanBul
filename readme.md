@@ -1,6 +1,6 @@
 # MekanBul Replit
 
-[Yakındaki Mekanları Listele - Replit](https://mekanbul.ozcancavga.repl.co/?enlem=36&boylam=34)
+[Yakındaki Mekanları Listele - Replit](https://mekanBul.ozcancavga.repl.co/?enlem=36&boylam=34)
 ![](/resimler/renderMetoduMekanlariListele.PNG)
 ---
 # MekanBul REST API Testleri
