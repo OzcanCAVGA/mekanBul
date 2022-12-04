@@ -1,76 +1,96 @@
+const axios = require("axios");
 var express = require("express");
 var router = express.Router();
 
-const anaSayfa = function (req, res, next) {
+
+var apiSecenekleri = {
+  sunucu: "http://localhost:3000",
+  //sunucu:"https://mekanbul.ozcancavga.repl.co",
+  apiYolu: "/api/mekanlar/",
+};
+var mesafeyiFormatla = function (mesafe) {
+  var yeniMesafe, birim;
+  if (mesafe > 1) {
+    yeniMesafe = parseFloat(mesafe).toFixed(1);
+    birim = " km";
+  } else {
+    yeniMesafe = parseInt(mesafe * 1000, 10);
+    birim = " m"
+  }
+  return yeniMesafe + birim;
+};
+var anaSayfaOlustur = function (res, mekanListesi) {
+  var mesaj;
+  //Gelen mekanListesi eger dizi tipinde degilse hata ver.
+  if (!(mekanListesi instanceof Array)) {
+    mesaj = "API HATASI: Birşeyler ters gitti!";
+    mekanListesi = [];
+  } else {
+    //Eger belirlenen mesafe icinde mekan bulunamadiysa bilgilendir
+    if (!mekanListesi.length) {
+      mesaj = "Civarda herhangi bir mekan bulunamadı!";
+    }
+  }
   res.render("anasayfa", {
     "baslik": "Anasayfa",
     "sayfaBaslik": {
       "siteAd": "Mekanbul",
-      "slogan": "Civardaki Mekanları Keşfet!",
+      "slogan": "Civardaki Mekanları Keşfet!"
     },
-    "mekanlar":[
-      {
-        "ad":"Safir",
-        "adres":"Sdü Batı Kampüsü",
-        "puan":"4",
-        "mesafe":"2 KM",
-        "imkanlar":["Kahveler","Fast-Food"]
-      },
-      {
-        "ad":"Cam Kafe",
-        "adres":"Sdü Batı Kampüsü",
-        "puan":"2",
-        "mesafe":"3 KM",
-        "imkanlar":["Öğrenciler","Tavla"]
-      }
-
-
-
-    ]
+    "mekanlar": mekanListesi,
+    "mesaj": mesaj
   });
 };
 
-const mekanBilgisi = function (req, res, next) {
-  res.render("mekanbilgisi",
-  { "baslik": "Mekan Bilgisi",
-   "mekanBaslik":"Safir",
-   "mekanDetay":{
-      "ad":"Safir",
-      "adres":"Sdü Batı Kampüsü",
-      "puan":"4",
-      "saatler":[
-        {
-          "gunler":"  Pazartesi-Cuma",
-          "acilis":"09:00",
-          "kapanis":"17:00",
-          "kapali": false
-        },
-        {
-          "gunler":"  Cumartesi-Pazar",
-          "kapali": true
-        }
-      ],
-      "imkanlar":["Öğrenciler","Tavla"],
-      "koordinatlar":{
-        "enlem":"37.829940049883014",
-        "boylam":"30.52548581056265"
-      },
-      "yorumlar":[
-        {
-          "yorumYapan":"Özcan",
-          "puan":"3",
-          "tarih":"25 Ekim 2022",
-          "yorumMetni":"Sevimli mekan"
-        }
-      ]
+const anaSayfa = function (req, res, next) {
+  axios.get(apiSecenekleri.sunucu + apiSecenekleri.apiYolu, {
+    params: {
+      enlem: req.query.enlem,
+      boylam: req.query.boylam
+    },
+  }).then(function (response) {
+    var i, mekanlar;
+    mekanlar = response.data;
+    for (i = 0; i < mekanlar.length; i++) {
+      mekanlar[i].mesafe = mesafeyiFormatla(mekanlar[i].mesafe);
+    }
+    anaSayfaOlustur(res, mekanlar);
+  }).catch(function (hata) {
+    anaSayfaOlustur(res, hata);
+  });
+};
+var detaySayfasiOlustur = function (res, mekanDetaylari) {
+  mekanDetaylari.koordinat = {
+    "enlem": mekanDetaylari.koordinat[0],
+    "boylam": mekanDetaylari.koordinat[1]
+  }
+  res.render('mekanbilgisi', {
+    mekanBaslik: mekanDetaylari.ad,
+    mekanDetay: mekanDetaylari
+  });
+};
+var hataGoster = function (res, hata) {
+  var mesaj;
+  if (hata.response.status == 404) {
+    mesaj = "404, Sayfa bulunamadı!";
+  } else {
+    mesaj = hata.response.status + " hatası.";
+  }
+  res.status(hata.response.status);
+  res.render('error', {
+    "mesaj": mesaj
+  });
+};
 
-   }
-
-
-
-
-
-});
+const mekanBilgisi = function(req, res) {
+  axios
+  .get(apiSecenekleri.sunucu + apiSecenekleri.apiYolu + req.params.mekanid)
+  .then(function(response) {
+      detaySayfasiOlustur(res, response.data);
+  })
+  .catch(function(hata) {
+      hataGoster(res, hata);
+  });
 };
 
 const yorumEkle = function (req, res, next) {

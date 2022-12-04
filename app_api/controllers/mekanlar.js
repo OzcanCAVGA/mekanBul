@@ -69,13 +69,13 @@ const mekanEkle = function (req, res) {
 
             {
                 gunler: req.body.gunler1,
-                acilir: req.body.acilis1,
+                acilis: req.body.acilis1, 
                 kapanis: req.body.kapanis1,
                 kapali: req.body.kapali1
             },
             {
                 gunler: req.body.gunler2,
-                acilir: req.body.acilis2,
+                acilis: req.body.acilis2,
                 kapanis: req.body.kapanis2,
                 kapali: req.body.kapali2
             }
