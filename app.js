@@ -3,6 +3,7 @@ var createError = require('http-errors');
 //require('./app_server/models/db'); 
 var express = require('express');
 var path = require('path');
+var session=require('express-session')
 var cookieParser=require('cookie-parser');
 var logger = require('morgan');
 require('./app_api/models/db');
@@ -10,6 +11,14 @@ var indexRouter=require('./app_server/routes/index');
 var usersRouter = require('./app_server/routes/users');
 var apiRouter=require('./app_api/routes/index');
 var app = express();
+app.use(session({
+  secret: "gizli",
+  cookie:{maxAge:1000*60*60*24},
+  resave: true,
+  saveUninitialized: true
+
+
+}));
 // view engine setup
 app.set('views', path.join(__dirname, 'app_server', 'views'));
 app.set('view engine', 'pug');
